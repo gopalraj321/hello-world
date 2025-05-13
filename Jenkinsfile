@@ -8,21 +8,35 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Verify File') {
             steps {
-                echo 'Building...'
+                script {
+                    if (fileExists('index.html')) {
+                        echo 'index.html found!'
+                    } else {
+                        error 'index.html is missing!'
+                    }
+                }
             }
         }
 
-        stage('Test') {
+        stage('Build') {
             steps {
-                echo 'Testing...'
+                echo 'Build stage skipped for static HTML.'
+            }
+        }
+
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'index.html', onlyIfSuccessful: true
+                echo 'index.html archived for later use.'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
+                echo 'You can add deployment logic here.'
+                // Example: sh 'cp index.html /var/www/html/'
             }
         }
     }
