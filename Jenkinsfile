@@ -25,8 +25,8 @@ pipeline {
             steps {
                 script {
                     // Ensure Jenkins has sudo rights for these commands without password
-                    sh 'sudo cp -f index.html /usr/share/nginx/html/'
-                    sh 'sudo cp -r images /usr/share/nginx/html/'
+                    sh 'sudo cp -f index.html /var/www/html/'
+                    sh 'sudo cp -r images /var/www/html/'
                     sh 'sudo systemctl restart nginx'
                 }
             }
