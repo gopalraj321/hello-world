@@ -21,21 +21,19 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nginx') {
+        stage('Deploy to Nginx (Windows)') {
             steps {
-                script {
-                    // Ensure Jenkins has sudo rights for these commands without password
-                    sh 'sudo cp -f index.html /var/www/html/'
-                    sh 'sudo cp -r images /var/www/html/'
-                    sh 'sudo systemctl restart nginx'
-                }
+                bat '''
+                copy /Y index.html C:\\nginx\\html\\
+                xcopy /E /I /Y images C:\\nginx\\html\\images\\
+                '''
             }
         }
     }
 
     post {
         success {
-            echo '✅ Website successfully deployed to Nginx!'
+            echo '✅ Website successfully deployed to Nginx on Windows!'
         }
         failure {
             echo '❌ Build or deployment failed. Check logs.'
